@@ -1,0 +1,242 @@
+{
+  "extracted": {
+    "account_details": {
+      "name": "MR PAHALAGE DHANUSHKA SANDARUWAN",
+      "account_number": "0360-13347848-120",
+      "currency": "SRI LANKA RUPEES",
+      "statement_date": "02/07/2025"
+    },
+    "transactions": {
+      "income": [
+        {
+          "date": "03JUN2025",
+          "description": "IB within accounts funds transfer",
+          "amount": 142953.2
+        },
+        {
+          "date": "03JUN2025",
+          "description": "Car",
+          "amount": 59000
+        },
+        {
+          "date": "05JUN2025",
+          "description": "2nd",
+          "amount": 400000
+        },
+        {
+          "date": "06JUN2025",
+          "description": "Funds transfer",
+          "amount": 111653.2
+        },
+        {
+          "date": "06JUN2025",
+          "description": "DS",
+          "amount": 300000
+        },
+        {
+          "date": "16JUN2025",
+          "description": "Transfer",
+          "amount": 10000
+        },
+        {
+          "date": "16JUN2025",
+          "description": "Funds transfer",
+          "amount": 20842.5
+        },
+        {
+          "date": "17JUN2025",
+          "description": "Funds transfer",
+          "amount": 68712.5
+        },
+        {
+          "date": "18JUN2025",
+          "description": "From Choreo",
+          "amount": 104000
+        },
+        {
+          "date": "19JUN2025",
+          "description": "Amma",
+          "amount": 200000
+        },
+        {
+          "date": "19JUN2025",
+          "description": "DS",
+          "amount": 97000
+        },
+        {
+          "date": "20JUN2025",
+          "description": "From Choreo",
+          "amount": 15000
+        },
+        {
+          "date": "24JUN2025",
+          "description": "EFT",
+          "amount": 251160.72
+        },
+        {
+          "date": "26JUN2025",
+          "description": "Funds transfer",
+          "amount": 188773.5
+        },
+        {
+          "date": "30JUN2025",
+          "description": "Funds transfer",
+          "amount": 27086.15
+        },
+        {
+          "date": "30JUN2025",
+          "description": "Interest",
+          "amount": 73.23
+        }
+      ],
+      "expenses": [
+        {
+          "date": "03JUN2025",
+          "description": "Utility bill",
+          "amount": 300
+        },
+        {
+          "date": "03JUN2025",
+          "description": "Transfer",
+          "amount": 140000
+        },
+        {
+          "date": "03JUN2025",
+          "description": "CEFT Charges",
+          "amount": 25
+        },
+        {
+          "date": "03JUN2025",
+          "description": "Transfer",
+          "amount": 60000
+        },
+        {
+          "date": "05JUN2025",
+          "description": "Transfer",
+          "amount": 400000
+        },
+        {
+          "date": "05JUN2025",
+          "description": "CEFT Charges",
+          "amount": 25
+        },
+        {
+          "date": "06JUN2025",
+          "description": "DS Save",
+          "amount": 30000
+        },
+        {
+          "date": "06JUN2025",
+          "description": "CEFT Charges",
+          "amount": 25
+        },
+        {
+          "date": "06JUN2025",
+          "description": "Transfer",
+          "amount": 300000
+        },
+        {
+          "date": "06JUN2025",
+          "description": "June Loan",
+          "amount": 45000
+        },
+        {
+          "date": "09JUN2025",
+          "description": "Utility Bill",
+          "amount": 2230
+        },
+        {
+          "date": "09JUN2025",
+          "description": "Restaurant",
+          "amount": 1700
+        },
+        {
+          "date": "11JUN2025",
+          "description": "Cargills",
+          "amount": 2778.76
+        },
+        {
+          "date": "16JUN2025",
+          "description": "LinkedIn",
+          "amount": 5779
+        },
+        {
+          "date": "16JUN2025",
+          "description": "DS Transfer",
+          "amount": 5000
+        },
+        {
+          "date": "16JUN2025",
+          "description": "Utility Bill",
+          "amount": 555
+        },
+        {
+          "date": "16JUN2025",
+          "description": "June-July",
+          "amount": 36000
+        },
+        {
+          "date": "17JUN2025",
+          "description": "ATM Withdrawal",
+          "amount": 70000
+        },
+        {
+          "date": "18JUN2025",
+          "description": "Pizza Hut",
+          "amount": 4364.5
+        },
+        {
+          "date": "18JUN2025",
+          "description": "Rich Look",
+          "amount": 9095
+        },
+        {
+          "date": "19JUN2025",
+          "description": "Funeral",
+          "amount": 105000
+        },
+        {
+          "date": "25JUN2025",
+          "description": "ATM Withdrawal",
+          "amount": 9000
+        },
+        {
+          "date": "26JUN2025",
+          "description": "Isuruf Dhanushka",
+          "amount": 3783
+        },
+        {
+          "date": "26JUN2025",
+          "description": "Utility Bill",
+          "amount": 300
+        },
+        {
+          "date": "26JUN2025",
+          "description": "Internet Transaction",
+          "amount": 6000
+        },
+        {
+          "date": "30JUN2025",
+          "description": "Trinity Mart",
+          "amount": 2600
+        },
+        {
+          "date": "30JUN2025",
+          "description": "ATM Withdrawal",
+          "amount": 2000
+        },
+        {
+          "date": "30JUN2025",
+          "description": "DS Insurance",
+          "amount": 26700
+        },
+        {
+          "date": "30JUN2025",
+          "description": "Utility Bill",
+          "amount": 550
+        }
+      ]
+    },
+    "final_balance": 66315.43
+  }
+}
