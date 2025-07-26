@@ -1,139 +1,62 @@
-# Runtime Configuration Guide
+# Choreo Runtime Configuration Guide
 
-This frontend application supports runtime configuration through a `config.js` file, eliminating the need to rebuild the Docker image when changing the backend URL or other settings.
+This frontend application supports Choreo's recommended runtime configuration pattern using a `config.js` file that can be mounted at deployment time without rebuilding the Docker image.
 
-## How It Works
+## How It Works (Choreo Pattern)
 
 1. **Build Time**: The application includes a default `config.js` file in the `public/` directory
-2. **Runtime**: The `config.js` file can be mounted/replaced in the container to override configuration
+2. **Runtime**: The `config.js` file can be mounted/replaced in Choreo's deployment configuration
 3. **Fallback**: If runtime config is not available, the app falls back to build-time environment variables, then to localhost
 
-## Configuration File Location
-
-### For Nginx (Default)
-```
-/usr/share/nginx/html/config.js
-```
-
-### For Node.js Serve
-```
-/app/dist/config.js
-```
-
-## Configuration Options
+## Configuration File Format (Choreo Standard)
 
 ```javascript
-window.APP_CONFIG = {
-  // Backend API URL (REQUIRED)
-  API_URL: 'https://your-backend-url.com',
+window.configs = {
+  // Relative path for Choreo managed services (recommended)
+  apiUrl: '/choreo-apis/default/bankstatmanagerservice/v1',
+  
+  // Or absolute URL for external services
+  // apiUrl: 'https://your-external-api.com/api/v1',
   
   // Application metadata
-  APP_NAME: 'Bank Statement Analyzer',
-  VERSION: '1.0.0',
+  appName: 'Bank Statement Analyzer',
+  version: '1.0.0',
   
   // Feature flags
-  FEATURES: {
-    PDF_GENERATION: true,
-    ADVANCED_ANALYTICS: true,
-    DEBUG_MODE: false
-  },
-  
-  // Timeout settings
-  TIMEOUT_SETTINGS: {
-    UPLOAD_TIMEOUT: 120000,  // 2 minutes
-    REPORT_TIMEOUT: 30000    // 30 seconds
+  features: {
+    pdfGeneration: true,
+    advancedAnalytics: true
   }
 };
 ```
 
-## Deployment Methods
+## Choreo Deployment Configuration
 
-### Method 1: ConfigMap in Kubernetes (Recommended for Choreo)
-
-1. **Create ConfigMap**:
-```yaml
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: frontend-config
-data:
-  config.js: |
-    window.APP_CONFIG = {
-      API_URL: 'https://your-backend.choreoapis.dev',
-      APP_NAME: 'Bank Statement Analyzer',
-      VERSION: '1.0.0',
-      FEATURES: {
-        PDF_GENERATION: true,
-        ADVANCED_ANALYTICS: true
-      }
-    };
-```
-
-2. **Mount in Deployment**:
-```yaml
-spec:
-  containers:
-  - name: frontend
-    volumeMounts:
-    - name: config-volume
-      mountPath: /usr/share/nginx/html/config.js
-      subPath: config.js
-  volumes:
-  - name: config-volume
-    configMap:
-      name: frontend-config
-```
-
-### Method 2: Docker Volume Mount
-
-```bash
-# Create config file
-cat > config.js << EOF
-window.APP_CONFIG = {
-  API_URL: 'https://your-backend-url.com'
+### Step 1: Create config.js Content
+```javascript
+window.configs = {
+  apiUrl: '/choreo-apis/default/bankstatmanagerservice/v1',
+  appName: 'Bank Statement Analyzer',
+  version: '1.0.0',
+  features: {
+    pdfGeneration: true,
+    advancedAnalytics: true
+  }
 };
-EOF
-
-# Run container with mounted config
-docker run -d \
-  -p 8080:80 \
-  -v $(pwd)/config.js:/usr/share/nginx/html/config.js:ro \
-  your-frontend-image
 ```
 
-### Method 3: Build-time Copy
+### Step 2: Mount in Choreo Deploy Page
+1. Go to your web application in Choreo Console
+2. Navigate to the **Deploy** page
+3. In the **Configure and Deploy** pane, find **File Mounts**
+4. Click **Add File Mount**
+5. Set:
+   - **Mount Path**: `/usr/share/nginx/html/config.js`
+   - **Content**: Paste your config.js content above
+6. Deploy your application
 
-```dockerfile
-# In your custom Dockerfile
-FROM your-frontend-image
-COPY custom-config.js /usr/share/nginx/html/config.js
-```
-
-## Choreo Deployment
-
-### Option A: Use Choreo ConfigMap
-
-1. Create a ConfigMap in Choreo with your config.js content
-2. Mount it to `/usr/share/nginx/html/config.js`
-3. Set the API_URL to your backend service URL
-
-### Option B: Use Choreo Environment Injection
-
-If Choreo supports environment variable injection at runtime, you can create a startup script:
-
-```bash
-#!/bin/sh
-# startup.sh
-cat > /usr/share/nginx/html/config.js << EOF
-window.APP_CONFIG = {
-  API_URL: '${BACKEND_URL}',
-  APP_NAME: 'Bank Statement Analyzer',
-  VERSION: '1.0.0'
-};
-EOF
-
-nginx -g "daemon off;"
-```
+### Step 3: Verify Configuration
+Visit `https://your-app-url/config-test.html` to verify the configuration is loaded correctly.
 
 ## Testing Configuration
 

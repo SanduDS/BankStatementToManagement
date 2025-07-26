@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Config Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .status { padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .info { background-color: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+        pre { background: #f8f9fa; padding: 15px; border-radius: 5px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>Configuration Test Page</h1>
+    
+    <div id="config-status"></div>
+    
+    <h3>Configuration Details:</h3>
+    <div id="config-details"></div>
+    
+    <h3>Raw Config Object:</h3>
+    <pre id="raw-config"></pre>
+
+    <script>
+        function checkConfig() {
+            const statusDiv = document.getElementById('config-status');
+            const detailsDiv = document.getElementById('config-details');
+            const rawConfigDiv = document.getElementById('raw-config');
+            
+            // Check Choreo's window.configs first
+            if (window.configs) {
+                statusDiv.innerHTML = '<div class="status success">✅ Choreo config loaded successfully!</div>';
+                
+                detailsDiv.innerHTML = `
+                    <div class="info status">
+                        <strong>API URL:</strong> ${window.configs.apiUrl}<br>
+                        <strong>App Name:</strong> ${window.configs.appName}<br>
+                        <strong>Version:</strong> ${window.configs.version}
+                    </div>
+                `;
+                
+                rawConfigDiv.textContent = JSON.stringify(window.configs, null, 2);
+            } 
+            // Check legacy config
+            else if (window.APP_CONFIG) {
+                statusDiv.innerHTML = '<div class="status success">✅ Legacy config loaded successfully!</div>';
+                
+                detailsDiv.innerHTML = `
+                    <div class="info status">
+                        <strong>API URL:</strong> ${window.APP_CONFIG.API_URL}<br>
+                        <strong>App Name:</strong> ${window.APP_CONFIG.APP_NAME}<br>
+                        <strong>Version:</strong> ${window.APP_CONFIG.VERSION}
+                    </div>
+                `;
+                
+                rawConfigDiv.textContent = JSON.stringify(window.APP_CONFIG, null, 2);
+            } else {
+                statusDiv.innerHTML = '<div class="status error">❌ No config loaded - neither window.configs nor window.APP_CONFIG is defined</div>';
+                detailsDiv.innerHTML = '<div class="status error">Check that config.js is being loaded properly</div>';
+                rawConfigDiv.textContent = 'undefined';
+            }
+        }
+        
+        // Check config when page loads
+        window.addEventListener('load', checkConfig);
+        
+        // Also check after a small delay to ensure config.js has loaded
+        setTimeout(checkConfig, 100);
+    </script>
+</body>
+</html>
