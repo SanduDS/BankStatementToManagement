@@ -1,28 +1,10 @@
-schemaVersion: "1.0"
-component:
-  name: bank-statement-analyzer-api
-  type: web-application
-  description: "Bank Statement Analyzer API with AI-powered transaction extraction"
-  icon: "https://wso2.cachefly.net/wso2/sites/all/2023-theme/images/choreo-logo.svg"
-  keywords:
-    - fastapi
-    - bank-statement
-    - ai
-    - pdf
-  category: "api"
-  version: "1.0.0"
-
-build:
-  dockerfile: ./Dockerfile
-
+schemaVersion: "1.2"
 endpoints:
-  - name: api
-    service:
-      port: 8080
-    type: REST
-    path: /
-    visibility: Public
-
-environment:
-  - name: ENVIRONMENT
-    value: "production"
+    - name: api
+      displayName: api
+      service:
+        basePath: /
+        port: 8080
+      type: REST
+      networkVisibilities:
+        - Public
