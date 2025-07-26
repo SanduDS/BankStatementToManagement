@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import { Upload, FileText, AlertCircle, CheckCircle, Loader } from 'lucide-react';
+import { getApiUrl } from '../utils/config';
 
 const FileUpload = ({ onAnalysisComplete, onUploadStart, loading }) => {
   const [dragActive, setDragActive] = useState(false);
@@ -64,7 +65,7 @@ const FileUpload = ({ onAnalysisComplete, onUploadStart, loading }) => {
       formData.append('password', password);
     }
 
-    const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+    const API_URL = getApiUrl();
 
     try {
       const response = await axios.post(`${API_URL}/api/upload/`, formData, {

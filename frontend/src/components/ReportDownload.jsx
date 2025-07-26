@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Download, FileText, Loader, BarChart3, PieChart, TrendingUp, CheckCircle } from 'lucide-react';
+import { getApiUrl } from '../utils/config';
 
 const ReportDownload = ({ analysisData }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-
-  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
   const downloadReport = async () => {
     if (!analysisData) {
@@ -18,6 +17,8 @@ const ReportDownload = ({ analysisData }) => {
     setLoading(true);
     setError('');
     setSuccess('');
+
+    const API_URL = getApiUrl();
 
     try {
       const response = await axios.post(

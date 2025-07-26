@@ -19,11 +19,6 @@ spec:
       type: web
       networkVisibility: public
   
-  # Environment variables
-  env:
-    - name: VITE_API_URL
-      value: "${API_BASE_URL}"
-  
   # Health check
   probes:
     readiness:
