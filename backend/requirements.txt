@@ -17,8 +17,8 @@ pydantic-core==2.27.2
 typing_extensions==4.12.2
 
 # PDF processing
-PyMuPDF==1.24.15
-PyMuPDFb==1.24.15
+PyMuPDF==1.26.3
+PyMuPDFb==1.26.3
 python-dotenv==1.0.1
 
 # PDF report generation
