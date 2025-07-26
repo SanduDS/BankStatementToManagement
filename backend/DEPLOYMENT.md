@@ -80,10 +80,24 @@ Update your frontend to use the deployed API URL instead of localhost.
 
 ### .choreo/component.yaml
 Defines the component configuration for Choreo deployment including:
-- Container specifications
-- Health checks
-- Resource limits
-- Endpoints
+- Build configuration (Dockerfile path)
+- Service endpoints with proper port mapping
+- Environment variables
+- Component metadata
+
+Key sections:
+```yaml
+build:
+  dockerfile: ./Dockerfile
+
+endpoints:
+  - name: api
+    service:
+      port: 8080  # Required field for Choreo
+    type: REST
+    path: /
+    visibility: Public
+```
 
 ### Dockerfile
 Multi-stage build configuration optimized for:

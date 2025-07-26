@@ -4,7 +4,8 @@ Health check script for deployed API
 Use this to verify your Choreo deployment is working
 """
 
-import requests
+import urllib.request
+import urllib.error
 import sys
 import json
 
@@ -16,36 +17,38 @@ def test_api_health(api_url):
     
     # Test health endpoint
     try:
-        response = requests.get(f"{api_url}/health", timeout=10)
-        if response.status_code == 200:
-            print("✅ Health check: PASSED")
-            print(f"   Response: {response.json()}")
-        else:
-            print(f"❌ Health check: FAILED (Status: {response.status_code})")
-            return False
+        with urllib.request.urlopen(f"{api_url}/health", timeout=10) as response:
+            if response.status == 200:
+                data = json.loads(response.read().decode('utf-8'))
+                print("✅ Health check: PASSED")
+                print(f"   Response: {data}")
+            else:
+                print(f"❌ Health check: FAILED (Status: {response.status})")
+                return False
     except Exception as e:
         print(f"❌ Health check: ERROR - {e}")
         return False
     
     # Test root endpoint
     try:
-        response = requests.get(api_url, timeout=10)
-        if response.status_code == 200:
-            print("✅ Root endpoint: PASSED")
-            print(f"   Response: {response.json()}")
-        else:
-            print(f"❌ Root endpoint: FAILED (Status: {response.status_code})")
+        with urllib.request.urlopen(api_url, timeout=10) as response:
+            if response.status == 200:
+                data = json.loads(response.read().decode('utf-8'))
+                print("✅ Root endpoint: PASSED")
+                print(f"   Response: {data}")
+            else:
+                print(f"❌ Root endpoint: FAILED (Status: {response.status})")
     except Exception as e:
         print(f"❌ Root endpoint: ERROR - {e}")
     
     # Test docs endpoint
     try:
-        response = requests.get(f"{api_url}/docs", timeout=10)
-        if response.status_code == 200:
-            print("✅ Documentation: ACCESSIBLE")
-            print(f"   Docs available at: {api_url}/docs")
-        else:
-            print(f"⚠️  Documentation: Status {response.status_code}")
+        with urllib.request.urlopen(f"{api_url}/docs", timeout=10) as response:
+            if response.status == 200:
+                print("✅ Documentation: ACCESSIBLE")
+                print(f"   Docs available at: {api_url}/docs")
+            else:
+                print(f"⚠️  Documentation: Status {response.status}")
     except Exception as e:
         print(f"⚠️  Documentation: ERROR - {e}")
     
@@ -54,7 +57,7 @@ def test_api_health(api_url):
 
 def main():
     # Default to localhost for testing
-    api_url = "http://localhost:8000"
+    api_url = "http://localhost:8080"  # Updated to port 8080 for Choreo
     
     if len(sys.argv) > 1:
         api_url = sys.argv[1].rstrip('/')
@@ -63,6 +66,12 @@ def main():
     print("==========================================")
     print(f"Testing: {api_url}")
     print()
+    
+    # Example Choreo URL format
+    if api_url == "http://localhost:8080":
+        print("💡 For Choreo deployment, use:")
+        print("   python health_check.py https://your-app-xxxx.choreoapis.dev")
+        print()
     
     if test_api_health(api_url):
         print("✅ API is healthy and ready!")

@@ -11,39 +11,18 @@ component:
     - pdf
   category: "api"
   version: "1.0.0"
-  
-container:
-  image: 
-    dockerfile: ./Dockerfile
-    context: .
-    
-  ports:
-    - containerPort: 8080
-      protocol: TCP
-      
-  healthcheck:
-    httpGet:
-      path: /health
-      port: 8080
-    initialDelaySeconds: 30
-    periodSeconds: 10
-    timeoutSeconds: 5
-    
-  resources:
-    requests:
-      memory: "512Mi"
-      cpu: "250m"
-    limits:
-      memory: "1Gi"
-      cpu: "500m"
+
+build:
+  dockerfile: ./Dockerfile
 
 endpoints:
   - name: api
-    port: 8080
+    service:
+      port: 8080
     type: REST
     path: /
     visibility: Public
-    
+
 environment:
   - name: ENVIRONMENT
     value: "production"
