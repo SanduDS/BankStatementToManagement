@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { Download, FileText, Loader, BarChart3, PieChart, TrendingUp, CheckCircle } from 'lucide-react';
-import { getApiUrl } from '../utils/config';
+import apiClient from '../utils/apiClient';
 
 const ReportDownload = ({ analysisData }) => {
   const [loading, setLoading] = useState(false);
@@ -18,29 +17,22 @@ const ReportDownload = ({ analysisData }) => {
     setError('');
     setSuccess('');
 
-    const API_URL = getApiUrl();
-
     try {
-      const response = await axios.post(
-        `${API_URL}/api/generate-report/`,
-        analysisData,
-        {
-          responseType: 'blob',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          timeout: 30000, // 30 seconds timeout
-        }
-      );
+      const response = await apiClient.post('/api/generate-report/', analysisData, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        timeout: 30000, // 30 seconds timeout
+      });
 
       // Create blob link to download
-      const blob = new Blob([response.data], { type: 'application/pdf' });
+      const blob = response.blob ? response.blob : new Blob([response], { type: 'application/pdf' });
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
       
       // Get filename from response headers or use default
-      const contentDisposition = response.headers['content-disposition'];
+      const contentDisposition = response.headers?.get('content-disposition');
       let filename = 'bank_statement_report.pdf';
       if (contentDisposition) {
         const filenameMatch = contentDisposition.match(/filename="(.+)"/);
@@ -62,8 +54,8 @@ const ReportDownload = ({ analysisData }) => {
       console.error('Download error:', error);
       if (error.code === 'ECONNABORTED') {
         setError('Request timed out. Please try again.');
-      } else if (error.response?.data?.detail) {
-        setError(error.response.data.detail);
+      } else if (error.message?.includes('detail')) {
+        setError(error.message);
       } else {
         setError('Failed to generate PDF report. Please try again.');
       }

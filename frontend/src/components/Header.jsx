@@ -1,5 +1,6 @@
 import React from 'react';
 import { BarChart3, TrendingUp, FileText, Download } from 'lucide-react';
+import AuthButtons from './AuthButtons';
 
 const Header = () => {
   return (
@@ -31,9 +32,12 @@ const Header = () => {
             </div>
           </div>
           
-          <div className="md:hidden">
-            <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-3 py-1 rounded-full text-xs font-medium">
-              MVP
+          <div className="flex items-center space-x-4">
+            <AuthButtons />
+            <div className="hidden sm:block">
+              <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-3 py-1 rounded-full text-xs font-medium">
+                MVP
+              </div>
             </div>
           </div>
         </div>

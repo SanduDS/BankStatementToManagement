@@ -18,6 +18,10 @@ spec:
       port: 80
       type: web
       networkVisibility: public
+      # Enable authentication for the frontend
+      auth:
+        required: true
+        type: oauth2
   
   # Health check
   probes:
