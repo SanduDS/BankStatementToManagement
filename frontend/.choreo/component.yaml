@@ -1,0 +1,41 @@
+apiVersion: core.choreo.dev/v1beta1
+kind: Component
+metadata:
+  name: bank-statement-frontend
+spec:
+  type: webapp
+  displayName: Bank Statement Analyzer Frontend
+  description: React frontend for bank statement analysis and reporting
+  
+  # Build configuration
+  build:
+    dockerfile: ./Dockerfile
+    context: .
+  
+  # Port configuration
+  endpoints:
+    - name: frontend
+      port: 80
+      type: web
+      networkVisibility: public
+  
+  # Environment variables
+  env:
+    - name: VITE_API_URL
+      value: "${API_BASE_URL}"
+  
+  # Health check
+  probes:
+    readiness:
+      httpGet:
+        path: /
+        port: 80
+      initialDelaySeconds: 10
+      periodSeconds: 10
+    
+    liveness:
+      httpGet:
+        path: /
+        port: 80
+      initialDelaySeconds: 30
+      periodSeconds: 30

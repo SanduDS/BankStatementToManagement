@@ -64,8 +64,10 @@ const FileUpload = ({ onAnalysisComplete, onUploadStart, loading }) => {
       formData.append('password', password);
     }
 
+    const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+
     try {
-      const response = await axios.post('http://localhost:8000/api/upload/', formData, {
+      const response = await axios.post(`${API_URL}/api/upload/`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

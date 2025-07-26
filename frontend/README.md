@@ -1,12 +1,159 @@
-# React + Vite
+# Bank Statement Analyzer - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React-based frontend application for analyzing bank statements and generating financial reports.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- 📤 **File Upload**: Upload PDF bank statements with password protection support
+- 📊 **AI-Powered Analysis**: Get detailed transaction insights using Claude AI
+- 📈 **Interactive Charts**: Visualize spending patterns and financial trends
+- 📄 **PDF Reports**: Generate professional financial reports
+- 🔒 **Secure Processing**: Client-side file handling with secure API communication
 
-## Expanding the ESLint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **React 19** - Frontend framework
+- **Vite** - Build tool and development server
+- **Tailwind CSS** - Utility-first CSS framework
+- **Recharts** - Data visualization library
+- **Axios** - HTTP client for API communication
+- **Lucide React** - Icon library
+
+## Development Setup
+
+### Prerequisites
+
+- Node.js 18 or higher
+- npm or yarn package manager
+
+### Installation
+
+1. **Clone the repository**:
+   ```bash
+   git clone <repository-url>
+   cd frontend
+   ```
+
+2. **Install dependencies**:
+   ```bash
+   npm install
+   ```
+
+3. **Set up environment variables**:
+   ```bash
+   cp .env.production.template .env
+   # Edit .env file with your backend URL
+   ```
+
+4. **Start development server**:
+   ```bash
+   npm run dev
+   ```
+
+5. **Open your browser**:
+   Navigate to `http://localhost:3000`
+
+## Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run build:prod` - Build for production with optimizations
+- `npm run preview` - Preview production build locally
+- `npm run lint` - Run ESLint
+- `npm run lint:fix` - Fix ESLint issues automatically
+
+## Environment Variables
+
+Create a `.env` file in the root directory:
+
+```env
+VITE_API_URL=http://localhost:8000
+```
+
+For production, use your deployed backend URL.
+
+## Deployment
+
+See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed deployment instructions for WSO2 Choreo.
+
+### Quick Deployment to Choreo
+
+1. **Prepare environment**:
+   ```bash
+   cp .env.production.template .env.production
+   # Update VITE_API_URL with your backend URL
+   ```
+
+2. **Test build**:
+   ```bash
+   npm run build
+   ```
+
+3. **Deploy to Choreo**:
+   - Create new Web Application component
+   - Connect GitHub repository
+   - Set build context to `/frontend`
+   - Configure environment variables
+   - Deploy
+
+## Project Structure
+
+```
+src/
+├── components/           # React components
+│   ├── FileUpload.jsx   # File upload functionality
+│   ├── TransactionAnalysis.jsx  # Analysis results display
+│   ├── ReportDownload.jsx       # PDF report generation
+│   ├── ReportFeatureShowcase.jsx # Feature highlights
+│   └── Header.jsx       # Application header
+├── assets/              # Static assets
+├── App.jsx             # Main application component
+├── App.css             # Global styles
+├── index.css           # Base styles
+└── main.jsx            # Application entry point
+```
+
+## API Integration
+
+The frontend communicates with the backend through these endpoints:
+
+- `POST /api/upload/` - Upload and analyze bank statement
+- `POST /api/generate-report/` - Generate PDF report
+
+API URL is configured through the `VITE_API_URL` environment variable.
+
+## Component Overview
+
+### FileUpload
+- Handles PDF file upload with drag-and-drop support
+- Password protection for encrypted PDFs
+- Progress indication and error handling
+
+### TransactionAnalysis
+- Displays parsed transaction data
+- Interactive charts and visualizations
+- Spending category breakdown
+
+### ReportDownload
+- Generates and downloads PDF reports
+- Customizable report templates
+- Progress tracking for report generation
+
+## Browser Support
+
+- Chrome 88+
+- Firefox 85+
+- Safari 14+
+- Edge 88+
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
+
+## License
+
+This project is licensed under the MIT License.
