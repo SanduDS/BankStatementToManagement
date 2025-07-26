@@ -5,6 +5,9 @@ import { useAuth } from '../hooks/useAuth';
 const ProtectedRoute = ({ children, fallback = null }) => {
   const { isAuthenticated, loading, login } = useAuth();
 
+  // Debug logging
+  console.log('ProtectedRoute state:', { isAuthenticated, loading });
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-32">

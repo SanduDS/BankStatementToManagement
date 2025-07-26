@@ -5,6 +5,9 @@ import { useAuth } from '../hooks/useAuth';
 const AuthButtons = () => {
   const { user, loading, login, logout, isAuthenticated } = useAuth();
 
+  // Debug logging
+  console.log('AuthButtons state:', { user, loading, isAuthenticated });
+
   if (loading) {
     return (
       <div className="flex items-center space-x-2">

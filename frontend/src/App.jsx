@@ -5,6 +5,7 @@ import ReportDownload from './components/ReportDownload';
 import ReportFeatureShowcase from './components/ReportFeatureShowcase';
 import Header from './components/Header';
 import ProtectedRoute from './components/ProtectedRoute';
+import AuthDebug from './components/AuthDebug';
 import { AuthProvider } from './contexts/AuthContext';
 import './App.css';
 
@@ -43,6 +44,11 @@ function App() {
                 <span className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full">📄 PDF Reports</span>
                 <span className="bg-orange-100 text-orange-800 px-3 py-1 rounded-full">🔒 Secure Processing</span>
               </div>
+            </div>
+
+            {/* Debug component - remove in production */}
+            <div className="mb-8">
+              <AuthDebug />
             </div>
 
             <ProtectedRoute>
