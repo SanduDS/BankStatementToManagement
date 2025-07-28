@@ -1,38 +1,16 @@
 import React, { useState, useMemo } from 'react';
 import { 
-  BarChart, 
-  Bar, 
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
-  Tooltip, 
-  ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell,
-  LineChart,
-  Line,
-  Area,
-  AreaChart
-} from 'recharts';
-import { 
   TrendingUp, 
   TrendingDown, 
   DollarSign, 
-  Calendar,
-  Filter,
-  Download,
   Eye,
   EyeOff,
   AlertTriangle,
   CheckCircle,
   Info,
-  BarChart3,
-  PieChart as PieChartIcon,
   Target
 } from 'lucide-react';
 import CostTracker from './CostTracker';
-import ErrorBoundary from './ErrorBoundary';
 
 const TransactionAnalysis = ({ data }) => {
   const [showExpenseDetails, setShowExpenseDetails] = useState(false);
@@ -311,61 +289,6 @@ const TransactionAnalysis = ({ data }) => {
   }
 
   const COLORS = ['#3B82F6', '#EF4444', '#10B981', '#F59E0B', '#8B5CF6', '#EC4899', '#06B6D4', '#84CC16'];
-
-  const CustomTooltip = ({ active, payload, label }) => {
-    if (active && payload && payload.length > 0) {
-      return (
-        <div className="bg-white p-3 border border-gray-200 rounded-lg shadow-lg">
-          <p className="font-medium">{`Month: ${label || 'Unknown'}`}</p>
-          {payload.map((entry, index) => (
-            <p key={index} style={{ color: entry.color }}>
-              {`${entry.dataKey || 'Unknown'}: ${(entry.value || 0).toLocaleString()}`}
-            </p>
-          ))}
-        </div>
-      );
-    }
-    return null;
-  };
-
-  // Safe chart component that validates data before rendering
-  const SafeChart = ({ children, data, type = "chart" }) => {
-    // Additional validation for chart data
-    if (!data || !Array.isArray(data) || data.length === 0) {
-      return (
-        <div className="flex items-center justify-center h-full text-gray-500">
-          <div className="text-center">
-            <div className="text-lg mb-2">No {type} data available</div>
-            <p className="text-sm">Insufficient transaction data to generate {type}.</p>
-          </div>
-        </div>
-      );
-    }
-
-    // Validate each data item
-    const validData = data.every(item => 
-      item && 
-      typeof item === 'object' && 
-      Object.values(item).every(value => 
-        value !== null && 
-        value !== undefined && 
-        (typeof value === 'string' || typeof value === 'number')
-      )
-    );
-
-    if (!validData) {
-      return (
-        <div className="flex items-center justify-center h-full text-gray-500">
-          <div className="text-center">
-            <div className="text-lg mb-2">Invalid {type} data</div>
-            <p className="text-sm">The data contains invalid values that cannot be charted.</p>
-          </div>
-        </div>
-      );
-    }
-
-    return children;
-  };
 
   return (
     <div className="bg-white rounded-lg shadow-md p-6 mt-8">
@@ -938,4 +861,5 @@ const TransactionAnalysis = ({ data }) => {
   );
 };
 
-export default TransactionAnalysis;
+// Memoize the component to prevent unnecessary re-renders
+export default React.memo(TransactionAnalysis);
