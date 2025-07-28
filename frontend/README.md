@@ -74,9 +74,9 @@ For production, use your deployed backend URL.
 
 ## Deployment
 
-See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed deployment instructions for WSO2 Choreo.
+This application can be deployed to any modern hosting platform that supports Node.js and static site hosting.
 
-### Quick Deployment to Choreo
+### Docker Deployment
 
 1. **Prepare environment**:
    ```bash
@@ -89,12 +89,38 @@ See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed deployment instructions for WS
    npm run build
    ```
 
-3. **Deploy to Choreo**:
-   - Create new Web Application component
-   - Connect GitHub repository
-   - Set build context to `/frontend`
-   - Configure environment variables
-   - Deploy
+3. **Deploy to hosting platform**:
+   - Build the application using `npm run build`
+   - Serve the `dist` folder using a web server
+   - Configure environment variables as needed
+   - Ensure backend API is accessible
+
+## Project Structure
+```
+
+For production, use your deployed backend URL.
+
+## Deployment
+
+This application can be deployed to any modern hosting platform that supports Node.js and static site hosting.
+
+### Docker Deployment
+
+1. **Prepare environment**:
+   ```bash
+   cp .env.production.template .env.production
+   # Update VITE_API_URL with your backend URL
+   ```
+
+2. **Test build**:
+   ```bash
+   npm run build
+   ```
+
+3. **Deploy**:
+   - Build the application using `npm run build`
+   - Upload the `dist` folder to your hosting platform
+   - Configure environment variables as needed
 
 ## Project Structure
 

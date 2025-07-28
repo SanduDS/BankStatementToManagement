@@ -1,37 +1,38 @@
-// Utility functions for accessing Choreo runtime configuration
+// Utility functions for accessing runtime configuration
 
 /**
- * Get the API URL from runtime configuration
- * Falls back to environment variable, then to localhost
- * Follows Choreo's recommended pattern
+ * Get the API URL for the backend service
+ * Priority order:
+ * 1. Runtime config (mounted config.js)
+ * 2. Environment variables
+ * 3. Development fallback
  */
-export const getApiUrl = () => {
-  // First try Choreo runtime config (mounted config.js)
-  if (window.configs && window.configs.apiUrl) {
+export function getApiUrl() {
+  // First try runtime config (mounted config.js)
+  if (typeof window !== 'undefined' && window.configs?.apiUrl) {
+    console.log('Using runtime config API URL:', window.configs.apiUrl);
     return window.configs.apiUrl;
   }
-  
-  // Fallback to legacy config for backward compatibility
-  if (window.APP_CONFIG && window.APP_CONFIG.API_URL) {
-    return window.APP_CONFIG.API_URL;
-  }
-  
-  // Fallback to build-time environment variable
+
+  // Fallback to environment variables
   if (import.meta.env.VITE_API_URL) {
+    console.log('Using environment variable API URL:', import.meta.env.VITE_API_URL);
     return import.meta.env.VITE_API_URL;
   }
-  
-  // Final fallback
-  return 'http://localhost:8000';
-};
+
+  // Development fallback
+  const fallbackUrl = 'http://localhost:8000';
+  console.log('Using fallback API URL:', fallbackUrl);
+  return fallbackUrl;
+}
 
 /**
- * Get application configuration
- * Supports both Choreo's window.configs and legacy window.APP_CONFIG
+ * Get app configuration from runtime config
+ * Supports both window.configs and legacy window.APP_CONFIG
  */
-export const getAppConfig = () => {
-  // Prefer Choreo's convention
-  if (window.configs) {
+export function getAppConfig() {
+  // Prefer standard convention
+  if (typeof window !== 'undefined' && window.configs) {
     return {
       API_URL: getApiUrl(),
       APP_NAME: window.configs.appName || 'Bank Statement Analyzer',
@@ -39,16 +40,17 @@ export const getAppConfig = () => {
       FEATURES: {
         PDF_GENERATION: window.configs.features?.pdfGeneration ?? true,
         ADVANCED_ANALYTICS: window.configs.features?.advancedAnalytics ?? true
-      },
-      TIMEOUT_SETTINGS: window.configs.timeoutSettings || {
-        UPLOAD_TIMEOUT: 120000,
-        REPORT_TIMEOUT: 30000
       }
     };
   }
-  
-  // Fallback to legacy config
-  return window.APP_CONFIG || {
+
+  // Legacy support
+  if (typeof window !== 'undefined' && window.APP_CONFIG) {
+    return window.APP_CONFIG;
+  }
+
+  // Default configuration
+  return {
     API_URL: getApiUrl(),
     APP_NAME: 'Bank Statement Analyzer',
     VERSION: '1.0.0',
@@ -57,7 +59,7 @@ export const getAppConfig = () => {
       ADVANCED_ANALYTICS: true
     }
   };
-};
+}
 
 /**
  * Check if a feature is enabled

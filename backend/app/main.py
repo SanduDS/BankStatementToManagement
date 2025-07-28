@@ -12,14 +12,12 @@ app = FastAPI(
     redoc_url="/redoc"
 )
 
-# Configure CORS for Choreo deployment
+# Configure CORS for frontend access
 origins = [
     "http://localhost:3000",
     "http://localhost:5173",
     "http://127.0.0.1:3000", 
     "http://127.0.0.1:5173",
-    "https://*.choreoapis.dev",  # WSO2 Choreo domains
-    "https://*.wso2.dev",        # WSO2 dev domains
 ]
 
 # Add environment-specific origins

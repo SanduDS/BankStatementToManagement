@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Health check script for deployed API
-Use this to verify your Choreo deployment is working
+Use this to verify your deployment is working
 """
 
 import urllib.request
@@ -57,7 +57,7 @@ def test_api_health(api_url):
 
 def main():
     # Default to localhost for testing
-    api_url = "http://localhost:8080"  # Updated to port 8080 for Choreo
+    api_url = "http://localhost:8000"  # Standard FastAPI port
     
     if len(sys.argv) > 1:
         api_url = sys.argv[1].rstrip('/')
@@ -67,10 +67,10 @@ def main():
     print(f"Testing: {api_url}")
     print()
     
-    # Example Choreo URL format
-    if api_url == "http://localhost:8080":
-        print("💡 For Choreo deployment, use:")
-        print("   python health_check.py https://your-app-xxxx.choreoapis.dev")
+    # Example deployment URL format
+    if api_url == "http://localhost:8000":
+        print("💡 For production deployment, use:")
+        print("   python health_check.py https://your-api-domain.com")
         print()
     
     if test_api_health(api_url):

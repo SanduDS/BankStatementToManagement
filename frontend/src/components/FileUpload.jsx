@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
+import axios from 'axios';
 import { Upload, FileText, AlertCircle, CheckCircle, Loader } from 'lucide-react';
-import apiClient from '../utils/apiClient';
+import { getApiUrl } from '../utils/config';
 
 const FileUpload = ({ onAnalysisComplete, onUploadStart, loading }) => {
   const [dragActive, setDragActive] = useState(false);
@@ -64,26 +65,28 @@ const FileUpload = ({ onAnalysisComplete, onUploadStart, loading }) => {
       formData.append('password', password);
     }
 
+    const API_URL = getApiUrl();
+
     try {
-      const response = await apiClient.post('/api/upload/', formData, {
+      const response = await axios.post(`${API_URL}/api/upload/`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
         timeout: 120000, // 2 minutes timeout
       });
 
-      if (response.error) {
-        setError(response.error);
+      if (response.data.error) {
+        setError(response.data.error);
       } else {
         setSuccess('Bank statement analyzed successfully!');
-        onAnalysisComplete(response.extracted);
+        onAnalysisComplete(response.data.extracted);
       }
     } catch (err) {
       console.error('Upload error:', err);
       if (err.code === 'ECONNABORTED') {
         setError('Request timed out. Please try again with a smaller file.');
-      } else if (err.message?.includes('error')) {
-        setError(err.message);
+      } else if (err.response?.data?.error) {
+        setError(err.response.data.error);
       } else {
         setError('Failed to analyze bank statement. Please try again.');
       }
