@@ -1,23 +1,28 @@
 import React, { useState } from 'react';
 import FileUpload from './components/FileUpload';
-import TransactionAnalysis from './components/TransactionAnalysis';
+import EnhancedTransactionAnalysis from './components/EnhancedTransactionAnalysis';
 import ReportDownload from './components/ReportDownload';
 import ReportFeatureShowcase from './components/ReportFeatureShowcase';
 import Header from './components/Header';
+import Footer from './components/Footer';
+import ErrorBoundary from './components/ErrorBoundary';
 import './App.css';
 
 function App() {
   const [analysisData, setAnalysisData] = useState(null);
+  const [analysisMetadata, setAnalysisMetadata] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const handleAnalysisComplete = (data) => {
+  const handleAnalysisComplete = (data, additionalData = {}) => {
     setAnalysisData(data);
+    setAnalysisMetadata(additionalData.metadata || null);
     setLoading(false);
   };
 
   const handleUploadStart = () => {
     setLoading(true);
     setAnalysisData(null);
+    setAnalysisMetadata(null);
   };
 
   return (
@@ -35,10 +40,11 @@ function App() {
             
             {/* Feature highlights */}
             <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600">
-              <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full">📊 AI-Powered Analysis</span>
-              <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full">📈 Interactive Charts</span>
+              <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full">🤖 AI Analysis</span>
+              <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full">📊 CSV Exports</span>
               <span className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full">📄 PDF Reports</span>
-              <span className="bg-orange-100 text-orange-800 px-3 py-1 rounded-full">🔒 Secure Processing</span>
+              <span className="bg-orange-100 text-orange-800 px-3 py-1 rounded-full">🏦 Bank Statement Validation</span>
+              <span className="bg-red-100 text-red-800 px-3 py-1 rounded-full">📈 Advanced Analytics</span>
             </div>
           </div>
 
@@ -54,12 +60,25 @@ function App() {
 
           {analysisData && (
             <div className="space-y-8">
-              <ReportDownload analysisData={analysisData} />
-              <TransactionAnalysis data={analysisData} />
+              <ErrorBoundary 
+                key={`analysis-${Date.now()}`}
+                title="Analysis Component Error"
+                message="There was an error displaying the transaction analysis. Please try refreshing the page."
+              >
+                <EnhancedTransactionAnalysis data={analysisData} />
+              </ErrorBoundary>
+              <ErrorBoundary 
+                key={`report-${Date.now()}`}
+                title="Report Download Error"
+                message="There was an error with the report download component."
+              >
+                <ReportDownload data={analysisData} />
+              </ErrorBoundary>
             </div>
           )}
         </div>
       </main>
+      <Footer />
     </div>
   );
 }

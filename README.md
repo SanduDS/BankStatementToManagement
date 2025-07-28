@@ -1,6 +1,48 @@
-# Bank Statement Analyzer & Report Generator
+# 🏦 Enhanced Bank Statement Analyzer & Report Generator
 
-A comprehensive AI-powered application for analyzing bank statements and generating professional PDF reports with financial insights.
+A **production-ready** AI-powered application for analyzing bank statements and generating professional PDF reports with advanced financial insights and CSV export capabilities.
+
+## ✨ **Latest Enhancements** (January 2025)
+
+### 🚀 **Major Upgrades**
+- **🤖 Claude 3.5 Sonnet Integration** - More accurate transaction extraction
+- **🛡️ Smart Bank Statement Validation** - AI-powered document verification with confidence scoring
+- **📊 CSV Export Suite** - 4 different export formats for comprehensive data analysis
+- **💡 Advanced Financial Insights** - Automated savings rate, spending analysis, and personalized recommendations
+- **🎯 Enhanced Error Handling** - Detailed error messages with actionable suggestions
+- **📈 Interactive Analytics Dashboard** - Multiple chart types and detailed breakdowns
+
+### 🔥 **Key Features**
+
+#### 🔍 **AI-Powered Analysis**
+- **Claude 3.5 Sonnet** for maximum extraction accuracy
+- **Smart document validation** with banking keyword detection
+- **Confidence scoring** for analysis reliability
+- **Enhanced categorization** into 9 expense categories
+- **Multi-format date recognition** (DDMMMYYYY, DD/MM/YYYY, etc.)
+
+#### 📊 **Advanced Analytics**
+- **Automated savings rate calculation** with personalized advice
+- **Monthly trend analysis** with net amount tracking  
+- **Category-wise spending breakdown** with percentage analysis
+- **Financial health scoring** based on income-expense ratios
+- **Interactive charts** (Bar, Area, Line) with detailed tooltips
+
+#### 📄 **Export & Reporting**
+- **4 CSV Export Formats**:
+  - 📋 **All Transactions** - Chronological with running balances
+  - 📊 **Account Summary** - Complete financial metrics
+  - 📈 **Monthly Analysis** - Month-by-month breakdown
+  - 🏷️ **Category Analysis** - Expense categorization with percentages
+- **Professional PDF Reports** with charts and insights
+- **One-click downloads** for all data formats
+
+#### 🛡️ **Security & Validation**
+- **Bank statement verification** prevents processing of invalid documents
+- **File type validation** beyond MIME type checking
+- **50MB file size limit** with progress indication
+- **Password-protected PDF support** with enhanced error handling
+- **No permanent data storage** - complete privacy protection
 
 ## ✨ Features
 
@@ -71,15 +113,74 @@ npm run dev
 - **Backend API**: http://localhost:8000
 - **API Docs**: http://localhost:8000/docs
 
-## 📡 API Endpoints
+## 📡 **Enhanced API Endpoints**
 
-### Analysis Endpoints
-- `POST /api/upload/` - Upload and analyze bank statement PDF
-- `GET /api/health` - Health check
+### 🔍 **Analysis Endpoints**
+- `POST /api/upload/` - **Enhanced bank statement upload and analysis**
+  - ✅ Smart document validation with confidence scoring
+  - ✅ Advanced error handling with detailed suggestions  
+  - ✅ CSV export data included in response
+  - ✅ Processing metadata and analytics
+  
+- `GET /api/health` - Health check endpoint
 
-### Report Generation
-- `POST /api/generate-report/` - Generate PDF report from analysis data
-- **Response**: PDF file download
+### 📊 **New CSV Export Endpoints**
+- `POST /api/export-csv/` - **Multi-format CSV export**
+  - `export_type=transactions` - All transactions with running balance
+  - `export_type=summary` - Account summary and financial metrics
+  - `export_type=monthly` - Monthly breakdown analysis
+  - `export_type=categories` - Expense categorization analysis  
+  - `export_type=all` - All formats in one response
+
+### 📄 **Report Generation**
+- `POST /api/generate-report/` - Generate enhanced PDF reports
+- **Response**: Professional PDF with charts, insights, and detailed analysis
+
+### 🔧 **Enhanced API Response Format**
+
+```json
+{
+  "success": true,
+  "extracted": {
+    "account_details": { "name": "...", "account_number": "...", "currency": "...", "statement_date": "..." },
+    "final_balance": 125000.00,
+    "transactions": { "income": [...], "expenses": [...] }
+  },
+  "csv_exports": {
+    "transactions": "Date,Type,Description,Amount,Running_Balance\n...",
+    "summary": "Metric,Value\nAccount Holder,John Doe\n...",
+    "monthly_summary": "Month,Income,Expenses,Net_Amount\n...",
+    "category_summary": "Category,Amount,Transaction_Count,Percentage\n..."
+  },
+  "metadata": {
+    "total_transactions": 63,
+    "income_transactions": 14,
+    "expense_transactions": 49,
+    "processing_time": "Complete",
+    "confidence": 0.95
+  }
+}
+```
+
+### 🛡️ **Enhanced Error Handling**
+
+```json
+{
+  "error": "Document doesn't appear to be a bank statement: insufficient banking terminology",
+  "error_type": "invalid_bank_statement",
+  "confidence": 0.15,
+  "analysis": {
+    "matched_keywords": ["statement", "account"],
+    "currency_patterns_found": 1,
+    "date_patterns_found": 2
+  },
+  "suggestions": [
+    "Ensure this is an official bank statement, not a receipt or invoice",
+    "Try downloading the statement again from your bank's website",
+    "Contact your bank if you continue to experience issues"
+  ]
+}
+```
 
 ### Example API Usage
 

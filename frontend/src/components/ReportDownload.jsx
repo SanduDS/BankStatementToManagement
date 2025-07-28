@@ -103,33 +103,33 @@ const ReportDownload = ({ analysisData }) => {
 
           {/* Features Preview */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
-            <div className="bg-white bg-opacity-70 rounded-lg p-3 text-center">
+            <div className="bg-white border border-gray-200 rounded-lg p-3 text-center shadow-sm">
               <BarChart3 className="w-5 h-5 text-blue-600 mx-auto mb-1" />
-              <p className="text-xs font-medium text-gray-700">Monthly Charts</p>
+              <p className="text-xs font-medium text-gray-800">Monthly Charts</p>
             </div>
-            <div className="bg-white bg-opacity-70 rounded-lg p-3 text-center">
+            <div className="bg-white border border-gray-200 rounded-lg p-3 text-center shadow-sm">
               <PieChart className="w-5 h-5 text-green-600 mx-auto mb-1" />
-              <p className="text-xs font-medium text-gray-700">Category Breakdown</p>
+              <p className="text-xs font-medium text-gray-800">Category Breakdown</p>
             </div>
-            <div className="bg-white bg-opacity-70 rounded-lg p-3 text-center">
+            <div className="bg-white border border-gray-200 rounded-lg p-3 text-center shadow-sm">
               <TrendingUp className="w-5 h-5 text-purple-600 mx-auto mb-1" />
-              <p className="text-xs font-medium text-gray-700">Financial Insights</p>
+              <p className="text-xs font-medium text-gray-800">Financial Insights</p>
             </div>
-            <div className="bg-white bg-opacity-70 rounded-lg p-3 text-center">
+            <div className="bg-white border border-gray-200 rounded-lg p-3 text-center shadow-sm">
               <FileText className="w-5 h-5 text-orange-600 mx-auto mb-1" />
-              <p className="text-xs font-medium text-gray-700">Transaction Tables</p>
+              <p className="text-xs font-medium text-gray-800">Transaction Tables</p>
             </div>
           </div>
 
           {/* Quick Stats */}
-          <div className="flex flex-wrap gap-4 text-sm text-gray-600">
-            <span className="bg-white bg-opacity-70 px-3 py-1 rounded-full">
+          <div className="flex flex-wrap gap-4 text-sm text-gray-700">
+            <span className="bg-white border border-gray-200 px-3 py-1 rounded-full shadow-sm font-medium">
               {incomeCount} Income transactions
             </span>
-            <span className="bg-white bg-opacity-70 px-3 py-1 rounded-full">
+            <span className="bg-white border border-gray-200 px-3 py-1 rounded-full shadow-sm font-medium">
               {expenseCount} Expense transactions
             </span>
-            <span className="bg-white bg-opacity-70 px-3 py-1 rounded-full">
+            <span className="bg-white border border-gray-200 px-3 py-1 rounded-full shadow-sm font-medium">
               {analysisData.account_details?.currency || 'LKR'} {(totalIncome + totalExpenses).toLocaleString()} Total Volume
             </span>
           </div>
