@@ -1,8 +1,10 @@
-from fastapi import APIRouter, UploadFile, File, Form, HTTPException
+from fastapi import APIRouter, UploadFile, File, Form, HTTPException, Depends
 from fastapi.responses import JSONResponse
 from app.services.pdf_parser import pdf_to_text
 from app.services.claude import extract_transactions_chunked
 from app.services.csv_export import CSVExportService
+from app.auth.middleware import get_current_user
+from typing import Dict, Any
 import logging
 import os
 import tempfile
@@ -14,11 +16,15 @@ logger = logging.getLogger(__name__)
 router = APIRouter()
 
 @router.post("/upload/")
-async def upload_statement(file: UploadFile = File(...), password: str = Form(None)):
+async def upload_statement(
+    file: UploadFile = File(...),
+    password: str = Form(None),
+    current_user: Dict[str, Any] = Depends(get_current_user)
+):
     """
     Enhanced bank statement upload and analysis with validation and CSV export
     """
-    logger.info(f"Received file: {file.filename}, size: {file.size} bytes")
+    logger.info(f"Received file: {file.filename}, size: {file.size} bytes from user: {current_user.get('username', current_user.get('user_id'))}")
     
     # Validate file size (max 50MB)
     if file.size > 50 * 1024 * 1024:
@@ -156,7 +162,11 @@ async def upload_statement(file: UploadFile = File(...), password: str = Form(No
             logger.warning(f"Failed to clean up temporary file: {e}")
 
 @router.post("/export-csv/")
-async def export_csv(data: dict, export_type: str = "transactions"):
+async def export_csv(
+    data: dict,
+    export_type: str = "transactions",
+    current_user: Dict[str, Any] = Depends(get_current_user)
+):
     """
     Export bank statement data to CSV format
     
@@ -168,6 +178,7 @@ async def export_csv(data: dict, export_type: str = "transactions"):
     - "all": All exports in a zip file
     """
     try:
+        logger.info(f"CSV export requested by user: {current_user.get('username', current_user.get('user_id'))}, type: {export_type}")
         csv_service = CSVExportService()
         
         if export_type == "all":

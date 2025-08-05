@@ -1,7 +1,6 @@
 import React, { useState, useRef } from 'react';
-import axios from 'axios';
 import { Upload, FileText, AlertCircle, CheckCircle, Loader, Info, Download } from 'lucide-react';
-import { getApiUrl } from '../utils/config';
+import { api, handleApiError } from '../utils/apiClient';
 
 const FileUpload = ({ onAnalysisComplete, onUploadStart, loading }) => {
   const [dragActive, setDragActive] = useState(false);
@@ -91,21 +90,29 @@ const FileUpload = ({ onAnalysisComplete, onUploadStart, loading }) => {
     setValidationInfo(null);
     onUploadStart();
 
-    const formData = new FormData();
-    formData.append('file', file);
-    if (password) {
-      formData.append('password', password);
-    }
-
-    const API_URL = getApiUrl();
-
     try {
-      const response = await axios.post(`${API_URL}/api/upload/`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-        timeout: 180000, // 3 minutes timeout for large files
-      });
+      let response;
+      
+      if (password) {
+        // For password-protected PDFs, use authenticatedRequest with FormData
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('password', password);
+        
+        response = await api.authenticatedRequest('post', '/api/upload/', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+          timeout: 180000, // 3 minutes timeout for large files
+        });
+      } else {
+        // Use the standard uploadFile method for files without password
+        response = await api.uploadFile(file, (progressEvent) => {
+          // Optional: Add upload progress handling here if needed
+          const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+          console.log(`Upload progress: ${percentCompleted}%`);
+        });
+      }
 
       // Handle both old and new response formats
       if (response.data.error) {
@@ -154,39 +161,21 @@ const FileUpload = ({ onAnalysisComplete, onUploadStart, loading }) => {
     } catch (err) {
       console.error('Upload error:', err);
       
-      let errorMessage = 'Failed to analyze bank statement.';
+      // Use the API client's error handling utility
+      const errorInfo = handleApiError(err);
+      let errorMessage = errorInfo.message;
       
+      // Add specific handling for upload-related errors
       if (err.code === 'ECONNABORTED') {
         errorMessage = 'Request timed out. Please try again with a smaller file or check your internet connection.';
-      } else if (err.response?.status === 413) {
-        errorMessage = 'File size too large. Please upload a file smaller than 50MB.';
       } else if (err.response?.data?.error) {
         const errorData = err.response.data;
         
-        // Provide user-friendly messages for specific error types
-        if (errorData.error_type) {
-          switch (errorData.error_type) {
-            case 'service_overloaded':
-              errorMessage = 'The AI service is currently overloaded. Please try again in a few moments.';
-              break;
-            case 'rate_limited':
-              errorMessage = 'Too many requests. Please wait a moment before trying again.';
-              break;
-            case 'invalid_api_key':
-              errorMessage = 'API configuration error. Please check your settings.';
-              break;
-            case 'invalid_bank_statement':
-              errorMessage = 'This document does not appear to be a valid bank statement.';
-              break;
-            default:
-              errorMessage = errorData.error || `Analysis failed: ${errorData.error_type}`;
-          }
-        } else {
-          errorMessage = errorData.error;
-        }
+        // Use the original error message if available
+        errorMessage = errorData.error;
         
         // Add suggestions if available
-        if (errorData.suggestions) {
+        if (errorData.suggestions && errorData.suggestions.length > 0) {
           errorMessage += '\n\nSuggestions:\n' + errorData.suggestions.map(s => `• ${s}`).join('\n');
         }
         
@@ -205,8 +194,6 @@ const FileUpload = ({ onAnalysisComplete, onUploadStart, loading }) => {
         } else if (errorData.error_type === 'rate_limited') {
           errorMessage += '\n\n💡 Please wait a moment before trying again.';
         }
-      } else if (err.response?.status === 500) {
-        errorMessage = 'Server error occurred. Please try again later or contact support.';
       }
       
       setError(errorMessage);

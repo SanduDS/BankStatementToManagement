@@ -1,0 +1,1 @@
+# Authentication module for WSO2 Asgardeo integration

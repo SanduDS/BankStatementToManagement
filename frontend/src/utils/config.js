@@ -40,13 +40,29 @@ export function getAppConfig() {
       FEATURES: {
         PDF_GENERATION: window.configs.features?.pdfGeneration ?? true,
         ADVANCED_ANALYTICS: window.configs.features?.advancedAnalytics ?? true
+      },
+      AUTH: {
+        CLIENT_ID: window.configs.auth?.clientId || import.meta.env.VITE_ASGARDEO_CLIENT_ID,
+        BASE_URL: window.configs.auth?.baseUrl || import.meta.env.VITE_ASGARDEO_BASE_URL,
+        SIGN_IN_REDIRECT_URL: window.configs.auth?.signInRedirectUrl || window.location.origin,
+        SIGN_OUT_REDIRECT_URL: window.configs.auth?.signOutRedirectUrl || window.location.origin,
+        SCOPE: window.configs.auth?.scope || ["openid", "profile", "email"]
       }
     };
   }
 
   // Legacy support
   if (typeof window !== 'undefined' && window.APP_CONFIG) {
-    return window.APP_CONFIG;
+    return {
+      ...window.APP_CONFIG,
+      AUTH: window.APP_CONFIG.AUTH || {
+        CLIENT_ID: import.meta.env.VITE_ASGARDEO_CLIENT_ID,
+        BASE_URL: import.meta.env.VITE_ASGARDEO_BASE_URL,
+        SIGN_IN_REDIRECT_URL: window.location.origin,
+        SIGN_OUT_REDIRECT_URL: window.location.origin,
+        SCOPE: ["openid", "profile", "email"]
+      }
+    };
   }
 
   // Default configuration
@@ -57,6 +73,13 @@ export function getAppConfig() {
     FEATURES: {
       PDF_GENERATION: true,
       ADVANCED_ANALYTICS: true
+    },
+    AUTH: {
+      CLIENT_ID: import.meta.env.VITE_ASGARDEO_CLIENT_ID,
+      BASE_URL: import.meta.env.VITE_ASGARDEO_BASE_URL,
+      SIGN_IN_REDIRECT_URL: window.location.origin,
+      SIGN_OUT_REDIRECT_URL: window.location.origin,
+      SCOPE: ["openid", "profile", "email"]
     }
   };
 }
@@ -67,4 +90,39 @@ export function getAppConfig() {
 export const isFeatureEnabled = (featureName) => {
   const config = getAppConfig();
   return config.FEATURES && config.FEATURES[featureName] === true;
+};
+
+/**
+ * Get authentication configuration
+ */
+export const getAuthConfig = () => {
+  const config = getAppConfig();
+  return config.AUTH;
+};
+
+/**
+ * Check if authentication is properly configured
+ */
+export const isAuthConfigured = () => {
+  const authConfig = getAuthConfig();
+  return !!(authConfig.CLIENT_ID && authConfig.BASE_URL);
+};
+
+/**
+ * Get the full Asgardeo configuration object
+ */
+export const getAsgardeoConfig = () => {
+  const config = getAppConfig();
+  const authConfig = config.AUTH;
+  
+  return {
+    signInRedirectURL: authConfig.SIGN_IN_REDIRECT_URL,
+    signOutRedirectURL: authConfig.SIGN_OUT_REDIRECT_URL,
+    clientID: authConfig.CLIENT_ID,
+    baseUrl: authConfig.BASE_URL,
+    scope: authConfig.SCOPE,
+    resourceServerURLs: [config.API_URL],
+    enablePKCE: true,
+    storage: "webWorker"
+  };
 };

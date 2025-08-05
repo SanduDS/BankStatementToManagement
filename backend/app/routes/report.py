@@ -1,14 +1,22 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 from fastapi.responses import FileResponse
 from app.services.pdf_generator import generate_statement_report
+from app.auth.middleware import get_current_user
+from typing import Dict, Any
 import os
 import json
+import logging
 from datetime import datetime
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
 @router.post("/generate-report/")
-async def generate_pdf_report(data: dict):
+async def generate_pdf_report(
+    data: dict,
+    current_user: Dict[str, Any] = Depends(get_current_user)
+):
     """
     Generate a PDF report from bank statement data
     
@@ -23,6 +31,8 @@ async def generate_pdf_report(data: dict):
     }
     """
     try:
+        logger.info(f"PDF report generation requested by user: {current_user.get('username', current_user.get('user_id'))}")
+        
         # Generate the PDF report
         pdf_path = generate_statement_report(data)
         

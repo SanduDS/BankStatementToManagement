@@ -1,5 +1,6 @@
 import React from 'react';
 import { BarChart3, TrendingUp, FileText, Download } from 'lucide-react';
+import AuthButtons from './AuthButtons';
 
 const Header = () => {
   return (
@@ -16,24 +17,31 @@ const Header = () => {
             </div>
           </div>
           
-          <div className="hidden md:flex items-center space-x-6">
-            <div className="flex items-center space-x-2 text-blue-600">
-              <TrendingUp className="h-4 w-4" />
-              <span className="text-sm font-medium">Smart Analytics</span>
+          <div className="flex items-center space-x-6">
+            {/* Feature highlights - hidden on small screens */}
+            <div className="hidden lg:flex items-center space-x-6">
+              <div className="flex items-center space-x-2 text-blue-600">
+                <TrendingUp className="h-4 w-4" />
+                <span className="text-sm font-medium">Smart Analytics</span>
+              </div>
+              <div className="flex items-center space-x-2 text-green-600">
+                <FileText className="h-4 w-4" />
+                <span className="text-sm font-medium">PDF Reports</span>
+              </div>
+              <div className="flex items-center space-x-2 text-purple-600">
+                <Download className="h-4 w-4" />
+                <span className="text-sm font-medium">Easy Export</span>
+              </div>
             </div>
-            <div className="flex items-center space-x-2 text-green-600">
-              <FileText className="h-4 w-4" />
-              <span className="text-sm font-medium">PDF Reports</span>
-            </div>
-            <div className="flex items-center space-x-2 text-purple-600">
-              <Download className="h-4 w-4" />
-              <span className="text-sm font-medium">Easy Export</span>
-            </div>
-          </div>
-          
-          <div className="md:hidden">
-            <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-3 py-1 rounded-full text-xs font-medium">
-              MVP
+            
+            {/* Authentication buttons */}
+            <AuthButtons />
+            
+            {/* MVP badge for mobile */}
+            <div className="md:hidden">
+              <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-3 py-1 rounded-full text-xs font-medium">
+                MVP
+              </div>
             </div>
           </div>
         </div>
